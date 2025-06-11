@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Redirect all output to log file
+exec > >(tee -a liveyt.log) 2>&1
+
+echo "[$(date)] Script started"
+
 # Konfigurasi
 STREAM_KEY="u2sy-pedp-y0t9-356w-bgj1"  # Ganti dengan stream key Anda
 IMAGE_DIR="/c/Users/Administrator/Desktop/ytlive/gambar"
