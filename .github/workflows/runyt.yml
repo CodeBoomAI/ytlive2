@@ -1,21 +1,28 @@
-name: Run yt.sh Script
+name: Liveyt.sh Runner
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   run-script:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Make yt.sh executable
-        run: chmod +x yt.sh
+      - name: Make liveyt.sh executable
+        run: chmod +x liveyt.sh
         
-      - name: Run yt.sh script
-        run: ./yt.sh
+      - name: Run yt.sh continuously
+        run: |
+          nohup ./liveyt.sh > liveyt.log 2>&1 &
+          echo $! > liveyt.pid
+          
+      - name: Keep alive
+        run: |
+          while [ -f liveyt.pid ] && ps -p $(cat liveyt.pid) > /dev/null; do
+            sleep 60
+          done
