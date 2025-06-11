@@ -1,4 +1,4 @@
-name: Liveyt.sh Runner
+name: Run yt.sh Runner
 
 on:
   push:
@@ -16,13 +16,15 @@ jobs:
       - name: Make liveyt.sh executable
         run: chmod +x liveyt.sh
         
-      - name: Run yt.sh continuously
+      - name: Run liveyt.sh in background
         run: |
           nohup ./liveyt.sh > liveyt.log 2>&1 &
           echo $! > liveyt.pid
           
-      - name: Keep alive
+      - name: Monitor process
         run: |
           while [ -f liveyt.pid ] && ps -p $(cat liveyt.pid) > /dev/null; do
-            sleep 60
+            sleep 300
+            echo "[$(date)] Process still running (PID: $(cat liveyt.pid))"
           done
+          echo "[$(date)] Process stopped"
