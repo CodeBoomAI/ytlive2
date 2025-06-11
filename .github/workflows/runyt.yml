@@ -1,0 +1,21 @@
+name: Run yt.sh Script
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Make yt.sh executable
+        run: chmod +x yt.sh
+        
+      - name: Run yt.sh script
+        run: ./yt.sh
